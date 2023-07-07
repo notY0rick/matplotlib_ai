@@ -2,7 +2,7 @@ import openai
 import inspect
 import matplotlib.pyplot as plt
 
-class MPL_ai:
+class matplotlib_ai:
 
     def __init__(self, openai_api_key):
         assert isinstance(openai_api_key, str), "openen_api_key needs to be provided as a string!"
@@ -32,15 +32,15 @@ class MPL_ai:
 
     @staticmethod
     def call_gpt(message):
-        prompt = MPL_ai.create_prompt(message)
+        prompt = matplotlib_ai.create_prompt(message)
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": prompt}])
         response = response['choices'][0]['message']['content']
         return response
     
     def __call__(self, prompt, print_code=False):
         frame = inspect.currentframe().f_back
-        prompt = MPL_ai.create_prompt(prompt)
-        code = MPL_ai.call_gpt(prompt)
+        prompt = matplotlib_ai.create_prompt(prompt)
+        code = matplotlib_ai.call_gpt(prompt)
         if print_code:
             print(code)
         exec(code, frame.f_globals, frame.f_locals)
