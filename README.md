@@ -49,3 +49,5 @@ plt.title('my ekg when i see you :)')
 plt.legend()
 plt.show()
 ```
+
+This project is at its early stages, I hope to make it more comprehensive in time :)
