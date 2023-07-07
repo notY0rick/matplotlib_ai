@@ -1,7 +1,14 @@
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
-    LONG_DESC = f.read()
+LONG_DESC = """
+Do you also have a love-hate relationship with matplotlib? So do I! 
+That's why I created this mini-project that can help you graph your data using natural language. 
+The package dependencies require openai and matplotlib, and it is unbelievably easy to use. 
+Calling OpenAI's GPT API, prompt engineering, and using few-shot learning, matplotlib_ai is capable 
+of generating graphs without requiring you to write a single line of matplotlib code! Check out this GitHub link:
+https://github.com/notY0rick/matplotlib_ai
+"""
+
 setup(name='matplotlib_ai',
       version='1.0',
       description='A GPT-powered tool to bring no-code data visualization to life!',
