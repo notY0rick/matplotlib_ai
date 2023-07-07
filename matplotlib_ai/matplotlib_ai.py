@@ -36,8 +36,14 @@ class matplotlib_ai:
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": prompt}])
         response = response['choices'][0]['message']['content']
         return response
-    
+
     def __call__(self, prompt, print_code=False):
+        """
+        Main function that takes a user prompt to produce the desired graph.
+        :param prompt: the input prompt describing the graph(s) the user wants - str
+        :param print_code: whether to print out the GPT-generated code - bool
+        :return: code: the GPT-generated code - str
+        """
         frame = inspect.currentframe().f_back
         prompt = matplotlib_ai.create_prompt(prompt)
         code = matplotlib_ai.call_gpt(prompt)
