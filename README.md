@@ -23,8 +23,8 @@ plt.show()
 ```
 However, with `matplotlib_ai` it is as easy as:
 ```python
-from mpl_ai.mpl_ai import MPL_ai
-mpl_ai = MPL_ai("YOUR-OPENAI-API-KEY")
+from matplotlib_ai.matplotlib_ai import matplotlib_ai
+mpl_ai = matplotlib_ai("YOUR-OPENAI-API-KEY")
 prompt = "graph a curve for each item in data and title the graph 'my ekg when i see you :)'. " + 
 		 "Make curve 'a' in data a dashed line.""
 code = mpl_ai(prompt)
