@@ -1,0 +1,9 @@
+LICENSE
+README.md
+setup.py
+matplotlib_ai/__init__.py
+matplotlib_ai/matplotlib_ai.py
+matplotlib_ai.egg-info/PKG-INFO
+matplotlib_ai.egg-info/SOURCES.txt
+matplotlib_ai.egg-info/dependency_links.txt
+matplotlib_ai.egg-info/top_level.txt
