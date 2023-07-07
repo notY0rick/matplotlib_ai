@@ -4,11 +4,10 @@ Do you also have a love-hate relationship with [matplotlib](https://matplotlib.o
 Say we have a dictionary `data` with 4 curves labeled `'a'`, `'b'`, `'c'`, and `'d'`:
 ```python
 import numpy as np
-data = {'a': np.arange(50),
-	'c': np.random.randint(0, 50, 50),
-	'd': np.random.randn(50)}
-data['b'] = data['a'] + 10 * np.random.randn(50)
-data['d'] = np.abs(data['d']) * 100
+data = {'a': [...] # some curve,
+        'b': [...] # some curve,
+	'c': [...] # some curve,
+	'd': [...] # some curve}
 ```
 If we wanted to graph each curve and make curve `'a'` dashed and call this graph "my ekg when i see you :)", the most sensible thing would be to write `matplotlib` code as such:
 ```python
