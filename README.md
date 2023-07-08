@@ -1,5 +1,10 @@
-# matplotlib_ai
+# `matplotlib_ai`
 Do you also have a love-hate relationship with [matplotlib](https://matplotlib.org/)? So do I! That's why I created this mini-project that can help you graph your data using natural language. The package dependencies require `openai` and `matplotlib`, and it is unbelievably easy to use. Calling OpenAI's GPT API, prompt engineering, and using few-shot learning, `matplotlib_ai` is capable of generating graphs without requiring you to write a single line of `matplotlib` code!
+
+Import `matplotlib_ai` via pip:
+```
+pip install matplotlib_ai
+```
 
 Say we have a dictionary `data` with 4 curves labeled `'a'`, `'b'`, `'c'`, and `'d'`:
 ```python
@@ -49,4 +54,4 @@ plt.legend()
 plt.show()
 ```
 
-This project is at its early stages, I hope to make it more comprehensive in time :)
+This project is at its early stages, I hope to make it more comprehensive in time :) 
