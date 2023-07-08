@@ -49,18 +49,34 @@ class matplotlib_ai:
         response = response['choices'][0]['message']['content']
         return response
 
-    def __call__(self, prompt, print_code=False):
+    def __call__(self, prompt, print_code=False, auto_rerun=True, n_candidates=1):
         """
         Main function that takes a user prompt to produce the desired graph.
         :param prompt: the input prompt describing the graph(s) the user wants - str
         :param print_code: whether to print out the GPT-generated code - bool
+        :param auto_rerun: automatically reruns the GPT if generated code fails - bool
+        :param n_candidates: how many candidate graphs it should generate - int
         :return: code: the GPT-generated code - str
         """
+        assert isinstance(prompt, str), "prompt needs to be a string"
+        assert isinstance(n_candidates, int), "n_candidates need to be an integer"
+        assert n_candidates >= 1, "n_candidates need to be >= 1"
+
+        count = 0
         if self.engine == 'gpt':
             frame = inspect.currentframe().f_back
             prompt = matplotlib_ai.create_prompt(prompt)
-            code = self.call_gpt(prompt)
-            if print_code:
-                print(code)
-            exec(code, frame.f_globals, frame.f_locals)
+            keep_trying = auto_rerun
+            while keep_trying:
+                try:
+                    code = self.call_gpt(prompt)
+                    if print_code:
+                        print(code)
+                    exec(code, frame.f_globals, frame.f_locals)
+                    count += 1
+                    if count == n_candidates:
+                        keep_trying = False
+                except:
+                    pass
+
             return code
