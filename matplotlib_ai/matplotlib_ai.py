@@ -4,10 +4,23 @@ import matplotlib.pyplot as plt
 
 class matplotlib_ai:
 
-    def __init__(self, openai_api_key):
-        assert isinstance(openai_api_key, str), "openen_api_key needs to be provided as a string!"
-        self.api_key = openai_api_key
-        openai.api_key = self.api_key
+    def __init__(self, api_key, engine='gpt', model_name='gpt-3.5-turbo'):
+        """
+        Initializer for matplotlib_ai.
+
+        :param api_key: the api key needed to access the models - str
+        :param engine: the type of engine to be used - str
+        :param model_name: the specified model to be used - str or None
+        """
+
+        assert isinstance(api_key, str), "api_key needs to be provided as a string!"
+        assert engine in ['gpt'], f"engine needs to be one of ['gpt']"
+
+        self.api_key = api_key
+        if engine == 'gpt':
+            self.engine = 'gpt'
+            self.model_name = model_name
+            openai.api_key = self.api_key
 
     @staticmethod
     def create_prompt(message):
@@ -30,10 +43,9 @@ class matplotlib_ai:
 
         return training_prompt
 
-    @staticmethod
-    def call_gpt(message):
+    def call_gpt(self, message):
         prompt = matplotlib_ai.create_prompt(message)
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": prompt}])
+        response = openai.ChatCompletion.create(model=self.model_name, messages=[{"role": "system", "content": prompt}])
         response = response['choices'][0]['message']['content']
         return response
 
@@ -44,10 +56,11 @@ class matplotlib_ai:
         :param print_code: whether to print out the GPT-generated code - bool
         :return: code: the GPT-generated code - str
         """
-        frame = inspect.currentframe().f_back
-        prompt = matplotlib_ai.create_prompt(prompt)
-        code = matplotlib_ai.call_gpt(prompt)
-        if print_code:
-            print(code)
-        exec(code, frame.f_globals, frame.f_locals)
-        return code
+        if self.engine == 'gpt':
+            frame = inspect.currentframe().f_back
+            prompt = matplotlib_ai.create_prompt(prompt)
+            code = self.call_gpt(prompt)
+            if print_code:
+                print(code)
+            exec(code, frame.f_globals, frame.f_locals)
+            return code
