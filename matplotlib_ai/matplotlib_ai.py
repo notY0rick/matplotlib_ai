@@ -1,6 +1,6 @@
 import openai
 import inspect
-import matplotlib.pyplot as plt
+
 
 class matplotlib_ai:
 
@@ -28,7 +28,7 @@ class matplotlib_ai:
             message = message[:-1]
         message = message[0].lower() + message[1:]
         training_prompt = \
-        f"""
+            f"""
         Prompt: Using matplotlib, create a box and whisker plot for x, y, and z. Assume the variables already exist. Return the code only.
         Response: import matplotlib.pyplot as plt\n\nplt.boxplot([x, y, z])\n\nplt.show()
         Prompt: Using matplotlib, plot three histograms, one for x, y, and z each. Assume variables already exist. Return the code only.
@@ -53,8 +53,8 @@ class matplotlib_ai:
         """
         Main function that takes a user prompt to produce the desired graph.
         :param prompt: the input prompt describing the graph(s) the user wants - str
-        :param print_code: whether to print out the GPT-generated code - bool
-        :param auto_rerun: automatically reruns the GPT if generated code fails - bool
+        :param print_code: whether to print out the AI-generated code - bool
+        :param auto_rerun: automatically reruns the AI if the generated code fails - bool
         :param n_candidates: how many candidate graphs it should generate - int
         :return: code: the GPT-generated code - str
         """
