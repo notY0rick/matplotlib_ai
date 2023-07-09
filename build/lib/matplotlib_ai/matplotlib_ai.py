@@ -62,7 +62,7 @@ class matplotlib_ai:
         :return: codes: a list of AI-generated code - list
         """
         assert isinstance(prompt, str), "prompt needs to be a string"
-        assert isinstance(print_code, str), "print_code needs to be a string"
+        assert isinstance(print_code, bool), "print_code needs to be a string"
         assert isinstance(auto_rerun, bool), "auto_rerun needs to be a boolean"
         assert isinstance(n_candidates, int), "n_candidates need to be an integer"
         assert n_candidates >= 1, "n_candidates need to be >= 1"
