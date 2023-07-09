@@ -10,7 +10,7 @@ https://github.com/notY0rick/matplotlib_ai
 """
 
 setup(name='matplotlib_ai',
-      version='1.0.2-beta',
+      version='1.0.3',
       description='A GPT-powered tool to bring no-code data visualization to life!',
       long_description=LONG_DESC,
       author='Yorick Chern',
