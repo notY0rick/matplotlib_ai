@@ -1,13 +1,29 @@
 import openai
 import inspect
-import matplotlib.pyplot as plt
+
 
 class matplotlib_ai:
 
-    def __init__(self, openai_api_key):
-        assert isinstance(openai_api_key, str), "openen_api_key needs to be provided as a string!"
-        self.api_key = openai_api_key
-        openai.api_key = self.api_key
+    def __init__(self, api_key, engine='gpt', model_name='gpt-3.5-turbo'):
+        """
+        Initializer for matplotlib_ai.
+
+        :param api_key: the api key needed to access the models - str
+        :param engine: the type of engine to be used - str
+        :param model_name: the specified model to be used - str or None
+        """
+
+        assert isinstance(api_key, str), "api_key needs to be provided as a string!"
+        assert engine in ['gpt'], f"engine needs to be one of ['gpt']"
+
+        self.api_key = api_key
+        if engine == 'gpt':
+            self.engine = 'gpt'
+            if model_name is not None:
+                self.model_name = model_name
+            else:
+                self.model_name = 'gpt-3.5-turbo'
+            openai.api_key = self.api_key
 
     @staticmethod
     def create_prompt(message):
@@ -15,7 +31,7 @@ class matplotlib_ai:
             message = message[:-1]
         message = message[0].lower() + message[1:]
         training_prompt = \
-        f"""
+            f"""
         Prompt: Using matplotlib, create a box and whisker plot for x, y, and z. Assume the variables already exist. Return the code only.
         Response: import matplotlib.pyplot as plt\n\nplt.boxplot([x, y, z])\n\nplt.show()
         Prompt: Using matplotlib, plot three histograms, one for x, y, and z each. Assume variables already exist. Return the code only.
@@ -30,18 +46,44 @@ class matplotlib_ai:
 
         return training_prompt
 
-    @staticmethod
-    def call_gpt(message):
+    def call_gpt(self, message):
         prompt = matplotlib_ai.create_prompt(message)
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": prompt}])
+        response = openai.ChatCompletion.create(model=self.model_name, messages=[{"role": "system", "content": prompt}])
         response = response['choices'][0]['message']['content']
         return response
-    
-    def __call__(self, prompt, print_code=False):
-        frame = inspect.currentframe().f_back
-        prompt = matplotlib_ai.create_prompt(prompt)
-        code = matplotlib_ai.call_gpt(prompt)
-        if print_code:
-            print(code)
-        exec(code, frame.f_globals, frame.f_locals)
-        return code
+
+    def __call__(self, prompt, print_code=False, auto_rerun=True, n_candidates=1):
+        """
+        Main function that takes a user prompt to produce the desired graph.
+        :param prompt: the input prompt describing the graph(s) the user wants - str
+        :param print_code: whether to print out the AI-generated code - bool
+        :param auto_rerun: automatically reruns the AI if the generated code fails - bool
+        :param n_candidates: how many candidate graphs it should generate - int
+        :return: codes: a list of AI-generated code - list
+        """
+        assert isinstance(prompt, str), "prompt needs to be a string"
+        assert isinstance(print_code, str), "print_code needs to be a string"
+        assert isinstance(auto_rerun, bool), "auto_rerun needs to be a boolean"
+        assert isinstance(n_candidates, int), "n_candidates need to be an integer"
+        assert n_candidates >= 1, "n_candidates need to be >= 1"
+
+        count = 0
+        codes = []
+        if self.engine == 'gpt':
+            frame = inspect.currentframe().f_back
+            prompt = matplotlib_ai.create_prompt(prompt)
+            keep_trying = auto_rerun
+            while keep_trying:
+                try:
+                    code = self.call_gpt(prompt)
+                    if print_code:
+                        print(code)
+                    exec(code, frame.f_globals, frame.f_locals)
+                    count += 1
+                    codes.append(code)
+                    if count == n_candidates:
+                        keep_trying = False
+                except:
+                    pass
+
+            return codes

@@ -19,7 +19,10 @@ class matplotlib_ai:
         self.api_key = api_key
         if engine == 'gpt':
             self.engine = 'gpt'
-            self.model_name = model_name
+            if model_name is not None:
+                self.model_name = model_name
+            else:
+                self.model_name = 'gpt-3.5-turbo'
             openai.api_key = self.api_key
 
     @staticmethod
@@ -56,13 +59,16 @@ class matplotlib_ai:
         :param print_code: whether to print out the AI-generated code - bool
         :param auto_rerun: automatically reruns the AI if the generated code fails - bool
         :param n_candidates: how many candidate graphs it should generate - int
-        :return: code: the GPT-generated code - str
+        :return: codes: a list of AI-generated code - list
         """
         assert isinstance(prompt, str), "prompt needs to be a string"
+        assert isinstance(print_code, str), "print_code needs to be a string"
+        assert isinstance(auto_rerun, bool), "auto_rerun needs to be a boolean"
         assert isinstance(n_candidates, int), "n_candidates need to be an integer"
         assert n_candidates >= 1, "n_candidates need to be >= 1"
 
         count = 0
+        codes = []
         if self.engine == 'gpt':
             frame = inspect.currentframe().f_back
             prompt = matplotlib_ai.create_prompt(prompt)
@@ -74,9 +80,10 @@ class matplotlib_ai:
                         print(code)
                     exec(code, frame.f_globals, frame.f_locals)
                     count += 1
+                    codes.append(code)
                     if count == n_candidates:
                         keep_trying = False
                 except:
                     pass
 
-            return code
+            return codes
