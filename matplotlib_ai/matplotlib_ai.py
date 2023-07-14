@@ -17,6 +17,7 @@ class matplotlib_ai:
         assert engine in ['gpt'], f"engine needs to be one of ['gpt']"
 
         self.api_key = api_key
+
         if engine == 'gpt':
             self.engine = 'gpt'
             if model_name is not None:
